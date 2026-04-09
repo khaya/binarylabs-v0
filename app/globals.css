@@ -1,26 +1,126 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #ededed;
+  --green: #00ff9f;
+  --green-dim: #00cc7a;
+  --green-bright: #22ff88;
+  --cyan: #00e5ff;
+  --cyan-dim: #0891b2;
+  --surface: #0a0a0a;
+  --surface-light: #111111;
+  --border: #1a1a1a;
+  --border-light: #2a2a2a;
+  --muted: #888888;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-green: var(--green);
+  --color-green-dim: var(--green-dim);
+  --color-green-bright: var(--green-bright);
+  --color-cyan: var(--cyan);
+  --color-cyan-dim: var(--cyan-dim);
+  --color-surface: var(--surface);
+  --color-surface-light: var(--surface-light);
+  --color-border: var(--border);
+  --color-border-light: var(--border-light);
+  --color-muted: var(--muted);
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --animate-blink: blink 1s step-end infinite;
+  --animate-glitch: glitch 0.3s ease-in-out;
+  --animate-scanline: scanline 8s linear infinite;
+  --animate-glow-pulse: glow-pulse 2s ease-in-out infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes glitch {
+  0%   { transform: translate(0); }
+  20%  { transform: translate(-2px, 2px); }
+  40%  { transform: translate(-2px, -2px); }
+  60%  { transform: translate(2px, 2px); }
+  80%  { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { text-shadow: 0 0 10px #00ff9f80, 0 0 20px #00ff9f40; }
+  50%      { text-shadow: 0 0 20px #00ff9fcc, 0 0 40px #00ff9f66, 0 0 60px #00ff9f33; }
+}
+
+/* Blinking terminal cursor */
+.cursor-blink::after {
+  content: "█";
+  animation: blink 1s step-end infinite;
+  color: var(--green);
+}
+
+/* Glitch hover (only on pointer devices) */
+@media (hover: hover) {
+  .glitch-hover:hover {
+    animation: glitch 0.3s ease-in-out;
   }
+}
+
+/* Green glow text */
+.text-glow {
+  color: var(--green);
+  text-shadow: 0 0 10px #00ff9f80, 0 0 20px #00ff9f40, 0 0 40px #00ff9f20;
+}
+
+.text-glow-strong {
+  color: var(--green-bright);
+  text-shadow: 0 0 10px #22ff88cc, 0 0 30px #22ff8866, 0 0 60px #22ff8833;
+}
+
+/* CRT scanline overlay */
+.scanline-overlay {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 159, 0.03) 2px,
+    rgba(0, 255, 159, 0.03) 4px
+  );
+}
+
+.scanline-overlay::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 4px;
+  background: rgba(0, 255, 159, 0.06);
+  animation: scanline 8s linear infinite;
+}
+
+/* Terminal-style border with subtle glow */
+.terminal-border {
+  border: 1px solid var(--border);
+  box-shadow: 0 0 10px rgba(0, 255, 159, 0.05), inset 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-mono);
 }
