@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 const navLinks = [
   { label: 'Services', href: '#services' },
@@ -13,6 +13,10 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const dialogRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     function handleScroll() {
       setScrolled(window.scrollY > 50)
@@ -23,13 +27,61 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const closeMenu = useCallback(() => setMobileMenuOpen(false), [])
+  const closeMenu = useCallback(() => {
+    setMobileMenuOpen(false)
+  }, [])
 
+  // Focus the close button and lock scroll when dialog opens; restore on close
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+      closeButtonRef.current?.focus()
+    } else {
+      document.body.style.overflow = ''
+      triggerRef.current?.focus()
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
+
+  // Keyboard: Escape to close + focus trap
   useEffect(() => {
     if (!mobileMenuOpen) return
-    function handleKeyDown(e: KeyboardEvent) {
-      if (e.key === 'Escape') closeMenu()
+
+    function getFocusable(): HTMLElement[] {
+      if (!dialogRef.current) return []
+      return Array.from(
+        dialogRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        )
+      )
     }
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        closeMenu()
+        return
+      }
+      if (e.key === 'Tab') {
+        const focusable = getFocusable()
+        if (focusable.length === 0) return
+        const first = focusable[0]
+        const last = focusable[focusable.length - 1]
+        if (e.shiftKey) {
+          if (document.activeElement === first) {
+            e.preventDefault()
+            last.focus()
+          }
+        } else {
+          if (document.activeElement === last) {
+            e.preventDefault()
+            first.focus()
+          }
+        }
+      }
+    }
+
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [mobileMenuOpen, closeMenu])
@@ -62,6 +114,8 @@ export default function Navbar() {
 
         {/* Mobile hamburger */}
         <button
+          ref={triggerRef}
+          type="button"
           className="md:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setMobileMenuOpen(true)}
           aria-label="Open menu"
@@ -77,6 +131,7 @@ export default function Navbar() {
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
         <div
+          ref={dialogRef}
           id="mobile-nav"
           role="dialog"
           aria-modal="true"
@@ -84,6 +139,8 @@ export default function Navbar() {
           className="fixed inset-0 z-50 bg-background flex flex-col items-center justify-center gap-8"
         >
           <button
+            ref={closeButtonRef}
+            type="button"
             className="absolute top-4 right-4 text-green text-3xl p-2"
             onClick={closeMenu}
             aria-label="Close menu"

@@ -48,10 +48,12 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <div>
-        <label className="block text-green text-xs font-mono mb-2">
+        <label htmlFor="contact-name" className="block text-green text-xs font-mono mb-2">
           &gt; name
         </label>
         <input
+          id="contact-name"
+          name="name"
           type="text"
           required
           className={inputClass}
@@ -62,10 +64,12 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-green text-xs font-mono mb-2">
+        <label htmlFor="contact-company" className="block text-green text-xs font-mono mb-2">
           &gt; company
         </label>
         <input
+          id="contact-company"
+          name="company"
           type="text"
           className={inputClass}
           placeholder="Company name"
@@ -75,10 +79,12 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-green text-xs font-mono mb-2">
+        <label htmlFor="contact-email" className="block text-green text-xs font-mono mb-2">
           &gt; email
         </label>
         <input
+          id="contact-email"
+          name="email"
           type="email"
           required
           className={inputClass}
@@ -89,10 +95,12 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-green text-xs font-mono mb-2">
+        <label htmlFor="contact-project-type" className="block text-green text-xs font-mono mb-2">
           &gt; project_type
         </label>
         <select
+          id="contact-project-type"
+          name="projectType"
           required
           className={inputClass}
           value={formData.projectType}
@@ -112,10 +120,12 @@ export default function ContactForm() {
       </div>
 
       <div>
-        <label className="block text-green text-xs font-mono mb-2">
+        <label htmlFor="contact-message" className="block text-green text-xs font-mono mb-2">
           &gt; message
         </label>
         <textarea
+          id="contact-message"
+          name="message"
           required
           rows={4}
           className={inputClass}
