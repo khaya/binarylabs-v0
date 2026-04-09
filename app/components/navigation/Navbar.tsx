@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const navLinks = [
   { label: 'Services', href: '#services' },
@@ -18,9 +18,21 @@ export default function Navbar() {
       setScrolled(window.scrollY > 50)
     }
 
+    handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const closeMenu = useCallback(() => setMobileMenuOpen(false), [])
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') closeMenu()
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [mobileMenuOpen, closeMenu])
 
   return (
     <nav
@@ -53,6 +65,8 @@ export default function Navbar() {
           className="md:hidden flex flex-col gap-1.5 p-2"
           onClick={() => setMobileMenuOpen(true)}
           aria-label="Open menu"
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-nav"
         >
           <span className="w-6 h-0.5 bg-green" />
           <span className="w-6 h-0.5 bg-green" />
@@ -62,10 +76,16 @@ export default function Navbar() {
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-50 bg-background flex flex-col items-center justify-center gap-8">
+        <div
+          id="mobile-nav"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation menu"
+          className="fixed inset-0 z-50 bg-background flex flex-col items-center justify-center gap-8"
+        >
           <button
             className="absolute top-4 right-4 text-green text-3xl p-2"
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={closeMenu}
             aria-label="Close menu"
           >
             ×
@@ -75,7 +95,7 @@ export default function Navbar() {
               key={link.href}
               href={link.href}
               className="text-muted hover:text-green transition-colors text-2xl font-mono"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMenu}
             >
               {link.label}
             </a>

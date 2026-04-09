@@ -1,10 +1,12 @@
+import type { ReactNode } from "react";
+
 export default function TerminalWindow({
   title = "~/terminal",
   children,
   className = "",
 }: {
   title?: string;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }) {
   return (

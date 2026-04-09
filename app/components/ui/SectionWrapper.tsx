@@ -1,10 +1,12 @@
+import type { ReactNode } from "react";
+
 export default function SectionWrapper({
   id,
   children,
   className = "",
 }: {
   id: string;
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
 }) {
   return (

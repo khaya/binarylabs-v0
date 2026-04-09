@@ -13,7 +13,6 @@ export default function MatrixRain() {
     if (!ctx) return
 
     let animationId: number
-    let isPaused = false
 
     const fontSize = 10
     const chars = '01'
@@ -55,11 +54,6 @@ export default function MatrixRain() {
     }
 
     function draw() {
-      if (isPaused) {
-        animationId = requestAnimationFrame(draw)
-        return
-      }
-
       ctx!.fillStyle = 'rgba(0, 0, 0, 0.05)'
       ctx!.fillRect(0, 0, canvas!.width, canvas!.height)
 
@@ -91,7 +85,11 @@ export default function MatrixRain() {
     }
 
     function handleVisibilityChange() {
-      isPaused = document.hidden
+      if (document.hidden) {
+        cancelAnimationFrame(animationId)
+      } else {
+        animationId = requestAnimationFrame(draw)
+      }
     }
 
     window.addEventListener('resize', handleResize)

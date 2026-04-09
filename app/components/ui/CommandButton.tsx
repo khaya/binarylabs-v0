@@ -1,10 +1,12 @@
+import type { ReactNode } from "react";
+
 export default function CommandButton({
   children,
   href,
   variant = "primary",
   className = "",
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   href: string;
   variant?: "primary" | "secondary";
   className?: string;

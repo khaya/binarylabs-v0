@@ -21,7 +21,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture
 
-- `app/` — Next.js App Router: `layout.tsx` (root layout with Geist fonts), `page.tsx` (home page), `globals.css`
+- `app/` — Next.js App Router: `layout.tsx` (root layout), `page.tsx` (home page), `globals.css` (dark-only global styles with JetBrains Mono)
 - `public/` — static assets
 - `@/*` path alias maps to project root (configured in `tsconfig.json`)
-- CSS custom properties `--background`/`--foreground` with dark mode via `prefers-color-scheme`, mapped to Tailwind theme tokens via `@theme inline`
+- CSS custom properties `--background`/`--foreground` are defined for a dark-only theme and mapped to Tailwind theme tokens via `@theme inline`

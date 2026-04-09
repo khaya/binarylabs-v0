@@ -1,9 +1,11 @@
+import type { ReactNode } from "react";
+
 export default function GlowText({
   children,
   className = "",
   as: Tag = "span",
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   className?: string;
   as?: "span" | "h1" | "h2" | "h3" | "p" | "div";
 }) {

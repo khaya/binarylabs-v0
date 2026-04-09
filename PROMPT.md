@@ -1,6 +1,6 @@
 Create a modern, premium single-page website for Binary Labs — a boutique  Johannesburg-based  Cloud & AI Agentic Workflows consultancy startup.
 
-11## Design Direction:
+## Design Direction:
 Sleek, futuristic, Linux terminal-inspired aesthetic with a cyber-minimalist feel. Dark theme with deep blacks, terminal green accents (#00ff9f / #22ff88), subtle cyan/blue highlights, and soft monospace typography. Think high-end cyberpunk meets enterprise professionalism (like a blend of Warp terminal, Linear.app, and Vercel).
 
 ## Key Visual Elements:
@@ -51,7 +51,7 @@ Minimal, terminal style with links and copyright
 
 ## Technical Requirements:
 
-Next.js 15 (App Router) + TypeScript + Tailwind CSS
+Next.js 16 (App Router) + TypeScript + Tailwind CSS
 Fully responsive (mobile-first)
 Smooth animations (Framer Motion)
 Dark mode only (terminal aesthetic)
